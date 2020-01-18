@@ -2,27 +2,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>NKU Hackathon</title>
+    <title>Possible Phishing Data</title>
     <style>
         table, th, td {
-          border: 1px solid black;
+          border: 2px solid black;
         }
     </style>
 </head>
 <body>
+    <body style="background-color:powderblue;">
     <script>
         var urlParams = new URLSearchParams(window.location.search);
         var username = urlParams.get('Username');
     </script>
-    <h1>
-        Welcome <script>document.write(username)</script>
-    </h1>
+    <h1 style="text-align:center">
+        Welcome <script>document.write(username)</script> </h1>
+       <div align="center">
     <form action="/profile">
         <input type="submit" value="Edit Profile">
-    </form>
-
-    <h2>Possible Phishing Data</h2>
-    <div id="root"></div>
+    </form></div>
+    <h2 style="text-align:center;">Possible Phishing Data</h2>
     <script src="../js/getData.js"></script>
 </body>
 </html>

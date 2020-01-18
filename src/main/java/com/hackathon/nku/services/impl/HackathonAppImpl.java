@@ -1,5 +1,6 @@
 package com.hackathon.nku.services.impl;
 
+import com.hackathon.nku.model.Email;
 import com.hackathon.nku.services.api.IHackathonApp;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -9,12 +10,16 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
 
 @Service
 public class HackathonAppImpl implements IHackathonApp {
 
+    private Connection con;
     @Override
     public String getHackathonData() throws IOException{
         String apiURL = "https://s3rdf9bxgg.execute-api.us-east-2.amazonaws.com/deploy/all";
@@ -28,19 +33,32 @@ public class HackathonAppImpl implements IHackathonApp {
         return jsonString;
     }
 
-    @Override
-    public String getDbData() {
-        return "";
 
-    }
+    @Override
+        public List<Email> getFlaggedEmails() {
+        List<Email> emailList = new ArrayList<>();
+        try{
+                Statement statement = con.createStatement();
+                String query = ("Select * from email_data");
+                ResultSet rs = statement.executeQuery(query);
+                if(rs.next()){
+                    Email email = new Email(rs.getString("sender"), Collections.singletonList(rs.getString("recipient")),
+                            rs.getString("subject"), rs.getString("body"), rs.getDate("send_date"), rs.getString("attachment"));
+                     emailList.add(email);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        return emailList;
+
+        }
 
     @Override
     public void storeHackathonData() {
 
         try {
-            Class.forName("msql");
-            String jdbcUrl = "jdbc:mysql:// gehackathon-theextras.cfer0hpjyt6u.us-east-2.rds.amazonaws.com:3306";
-            Connection con = DriverManager.getConnection(jdbcUrl);
+            con = getConnection();
             Statement statement = con.createStatement();
 
             JSONParser parser = new JSONParser();
@@ -66,6 +84,12 @@ public class HackathonAppImpl implements IHackathonApp {
         catch (Exception ex){
             ex.printStackTrace();
         }
+    }
+
+    private Connection getConnection() throws ClassNotFoundException, SQLException {
+        Class.forName("msql");
+        String jdbcUrl = "jdbc:mysql:// gehackathon-theextras.cfer0hpjyt6u.us-east-2.rds.amazonaws.com:3306";
+        return DriverManager.getConnection(jdbcUrl);
     }
 
     @Override

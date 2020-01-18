@@ -1,13 +1,16 @@
 package com.hackathon.nku.services.api;
+import com.hackathon.nku.model.Email;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 public interface IHackathonApp {
 
     void storeHackathonData() throws ClassNotFoundException;
 
-    String getDbData();
+    List<Email> getFlaggedEmails();
 
     String getHackathonData() throws IOException;
 
@@ -15,7 +18,7 @@ public interface IHackathonApp {
 
     String getImage(String id);
 
-    String postImage(String id, InputStream input, String type) throws FileNotFoundException, IOException;
+    String postImage(String id, InputStream input, String type) throws FileNotFoundException;
 
     String postBio(String id, String bio);
 }
