@@ -4,6 +4,11 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public interface IHackathonApp {
+
+    void storeHackathonData() throws ClassNotFoundException;
+
+    String getDbData();
+
     String getHackathonData() throws IOException;
 
     String getBioData(String id);

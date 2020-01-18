@@ -1,11 +1,16 @@
 package com.hackathon.nku.services.impl;
 
 import com.hackathon.nku.services.api.IHackathonApp;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.simple.parser.*;
 import org.springframework.stereotype.Service;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.sql.*;
 import java.util.stream.Collectors;
+
 
 @Service
 public class HackathonAppImpl implements IHackathonApp {
@@ -24,11 +29,50 @@ public class HackathonAppImpl implements IHackathonApp {
     }
 
     @Override
+    public String getDbData() {
+        return "";
+
+    }
+
+    @Override
+    public void storeHackathonData() {
+
+        try {
+            Class.forName("msql");
+            String jdbcUrl = "jdbc:mysql:// gehackathon-theextras.cfer0hpjyt6u.us-east-2.rds.amazonaws.com:3306";
+            Connection con = DriverManager.getConnection(jdbcUrl);
+            Statement statement = con.createStatement();
+
+            JSONParser parser = new JSONParser();
+            String s = getHackathonData();
+            try{
+                Object obj = parser.parse(s);
+                JSONArray array = (JSONArray)obj;
+
+                System.out.println("The 2nd element of array");
+                System.out.println(array.get(1));
+
+            }catch(ParseException pe) {
+
+                System.out.println("position: " + pe.getPosition());
+                System.out.println(pe);
+            }
+
+
+
+            }catch (SQLException ex){
+            ex.printStackTrace();
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
     public String getBioData(String id) {
         FileReader file = null;
         String bio = "";
         try {
-
             File pathFile = new File("src/main/java/com/hackathon/nku/services/bios/" + id + ".txt");
             file = new FileReader(pathFile.getCanonicalPath());
             BufferedReader reader = new BufferedReader(file);
@@ -40,6 +84,9 @@ public class HackathonAppImpl implements IHackathonApp {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+        catch (Exception e){
             e.printStackTrace();
         }
         return bio;

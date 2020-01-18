@@ -21,7 +21,7 @@ public class ServicesImpl {
 
     @RequestMapping("/hackathon")
     public String getData(@Context HttpServletRequest request) throws IOException {
-        return iHackathonApp.getHackathonData();
+        return iHackathonApp.getDbData();
     }
 
     @RequestMapping(value = "/hackathon/getbio")
