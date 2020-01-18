@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface IHackathonApp {
 
-    void storeHackathonData() throws ClassNotFoundException;
+    void storeHackathonData() throws IOException;
 
     List<Email> getFlaggedEmails();
 

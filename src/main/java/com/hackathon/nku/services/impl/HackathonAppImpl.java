@@ -34,6 +34,7 @@ public class HackathonAppImpl implements IHackathonApp {
     }
 
 
+
     @Override
         public List<Email> getFlaggedEmails() {
         List<Email> emailList = new ArrayList<>();
@@ -54,33 +55,29 @@ public class HackathonAppImpl implements IHackathonApp {
 
         }
 
-    @Override
-    public void storeHackathonData() {
 
-        try {
+    @Override
+    public void storeHackathonData() throws IOException{
+        try{
             con = getConnection();
             Statement statement = con.createStatement();
 
-            JSONParser parser = new JSONParser();
-            String s = getHackathonData();
-            try{
-                Object obj = parser.parse(s);
-                JSONArray array = (JSONArray)obj;
+            JSONObject obj = new JSONObject(getHackathonData());
+            String pageName = obj.getJSONObject("data").getString("subject");
 
-                System.out.println("The 2nd element of array");
-                System.out.println(array.get(1));
-
-            }catch(ParseException pe) {
-
-                System.out.println("position: " + pe.getPosition());
-                System.out.println(pe);
+            JSONArray arr = obj.getJSONArray("data");
+            for (int i = 0; i < arr.length(); i++) {
+                String post_id = arr.getJSONObject(i).getString("subject");
+                statement.executeUpdate("INSERT INTO email_data VALUES(" + post_id + " )");
             }
-
-
-
-            }catch (SQLException ex){
-            ex.printStackTrace();
         }
+        catch(ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
+
         catch (Exception ex){
             ex.printStackTrace();
         }
