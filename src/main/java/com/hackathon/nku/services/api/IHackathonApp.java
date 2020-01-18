@@ -18,7 +18,7 @@ public interface IHackathonApp {
 
     String getImage(String id);
 
-    String postImage(String id, InputStream input, String type) throws FileNotFoundException;
+    String postImage(String id, InputStream input, String type) throws FileNotFoundException, IOException;
 
     String postBio(String id, String bio);
 }
