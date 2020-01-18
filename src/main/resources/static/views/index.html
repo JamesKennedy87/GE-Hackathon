@@ -9,19 +9,17 @@
         }
     </style>
 </head>
-<body>
-    <body style="background-color:powderblue;">
+<body style="background-color: #98d8eb;">
     <script>
         var urlParams = new URLSearchParams(window.location.search);
         var username = urlParams.get('Username');
     </script>
-    <h1 style="text-align:center">
-        Welcome <script>document.write(username)</script> </h1>
-       <div align="center">
-    <form action="/profile">
-        <input type="submit" value="Edit Profile">
-    </form></div>
-    <h2 style="text-align:center;">Possible Phishing Data</h2>
+    <h1 style="background-color: #53ced8;">
+        <center>Welcome <script>document.write(username) </center> </script>
+    </h1>
+
+    <h2 style="background-color: #a3e4fa;"> <center> Possible Phishing Data </center> </h2>
+    <div id="root"></div>
     <script src="../js/getData.js"></script>
 </body>
 </html>
